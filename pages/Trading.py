@@ -3,9 +3,11 @@ import pandas as pd
 import yfinance as yf
 import datetime as dt
 from Stock_price import stock_price_download
+from Financial_statment import financial_statment
 
-ticker_excel = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Tickers\Tickers_nifty_500.xlsx"
-Order_traction = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Database\Order_traction.xlsx"
+
+ticker_excel = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Tickers\Tickers_nifty_500.xlsx"
+Order_traction = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Database\Order_traction.xlsx"
 
 if 'order_type' not in st.session_state:
     st.session_state.order_type = None
@@ -109,8 +111,12 @@ def main_page():
             'stock_quantity':stock_quantity
             }
             print(f'Order detail : {st.session_state.order_data}')
+
             try:
-                Buy_Sell_Stock(st.session_state.order_data)
+                if financial_statment(st.session_state.order_data) == True:
+                    Buy_Sell_Stock(st.session_state.order_data)
+                elif financial_statment(st.session_state.order_data) == False:
+                    st.write("Insufficient funds to complete the purchase.")
             except Exception as e:
                 print(f" Error : {e}")
                 pass
@@ -125,6 +131,7 @@ def main_page():
 
 
             order_type="Sell"
+            
             st.session_state.order_data = {
             'stock_symbol':stock_symbol,
             'stock_price':str(stock_price_data),
@@ -134,7 +141,10 @@ def main_page():
             }
             print(f'Order detail : {st.session_state.order_data}')
             try:
-                Buy_Sell_Stock(st.session_state.order_data)
+                if financial_statment(st.session_state.order_data) == True:
+                    Buy_Sell_Stock(st.session_state.order_data)
+                elif financial_statment(st.session_state.order_data) == False:
+                    st.write("Insufficient funds to complete the purchase.")
             except Exception as e:
                 print(f" Error : {e}")
                 pass

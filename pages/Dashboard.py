@@ -4,8 +4,8 @@ import datetime as dt
 from Stock_price import stock_price_download
 
 
-excel_file = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Database\Order_traction.xlsx"
-portfolio_excel_file = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Database\Dashboard.xlsx"
+excel_file = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Database\Order_traction.xlsx"
+portfolio_excel_file = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Database\Dashboard.xlsx"
 
 
 def portfolio_creation(df):
@@ -49,6 +49,25 @@ def portfolio_creation(df):
     except Exception as e:
         print("Error in portfolio_creation:", e)
 
+
+def get_portfolio_kpis(df):
+    # Calculate the sums from the dataframe
+    total_investment = df['total_investment'].sum()
+    current_total_value = df['total_current_investment'].sum()
+    
+    # It's usually helpful to include Profit/Loss as well
+    total_p_l = current_total_value - total_investment
+    p_l_percentage = (total_p_l / total_investment * 100) if total_investment != 0 else 0
+
+    # Create the dictionary
+    kpi_dict = {
+        "total_investment": round(total_investment, 2),
+        "current_total_value": round(current_total_value, 2),
+        "total_p_l": round(total_p_l, 2),
+        "p_l_percentage": f"{round(p_l_percentage, 2)}%"
+    }
+    
+    return kpi_dict
 
 def rename_columns(df):
     return df.rename(columns={
@@ -260,12 +279,34 @@ if __name__ =='__main__':
             # Dataframe transformation for dashboard
             
             df_dash = Dashboard()
-            
+           
 
 
             if df_dash is not None:
+                # Portfolio creation
                 df_dash= portfolio_creation(df_dash)
+
+                # KPIs Calculation 
+                kpi_dict = get_portfolio_kpis(df_dash)
+
+                # renaming columns
                 df_dash = rename_columns(df_dash)
+
+
+                col_k1, col_k2, col_k3, col_k4 = st.columns([1,1,1,1])
+
+                with col_k1:
+                    st.metric(label="Total Investment", value=kpi_dict['total_investment']) #, delta="1.2 °F"
+                
+                with col_k2:
+                    st.metric(label="Total Current Value", value=kpi_dict['current_total_value']) #, delta="1.2 °F"
+
+                with col_k3:
+                    st.metric(label="Total Current Value", value=kpi_dict['total_p_l'], delta=kpi_dict['p_l_percentage'])
+
+
+
+
                 st.dataframe(data=df_dash, hide_index=True)
             else:
                 st.write("No Trade has be taken Yet")
