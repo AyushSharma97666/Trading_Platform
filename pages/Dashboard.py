@@ -4,8 +4,8 @@ import datetime as dt
 from Stock_price import stock_price_download
 
 
-excel_file = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Database\Order_traction.xlsx"
-portfolio_excel_file = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Database\Dashboard.xlsx"
+excel_file = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Database\Order_traction.xlsx"
+portfolio_excel_file = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Database\Dashboard.xlsx"
 
 
 def portfolio_creation(df):

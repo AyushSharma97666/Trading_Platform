@@ -6,8 +6,8 @@ from Stock_price import stock_price_download
 from Financial_statment import financial_statment
 
 
-ticker_excel = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Tickers\Tickers_nifty_500.xlsx"
-Order_traction = r"C:\Users\aysharma\Desktop\Self_v1\Trading_platform\Database\Order_traction.xlsx"
+ticker_excel = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Tickers\Tickers_nifty_500.xlsx"
+Order_traction = r"C:\Users\aysharma\Desktop\Projects\Trading_platform\Database\Order_traction.xlsx"
 
 if 'order_type' not in st.session_state:
     st.session_state.order_type = None
